@@ -31,7 +31,7 @@
                             <td>
                             <span class="table-remove">
                                 <button type="button"
-                                        class="btn blue lighten-3 btn-rounded btn-sm my-0">Add to cart</button>
+                                        class="btn blue lighten-3 btn-rounded btn-sm my-0" @click="addToCart(product)">Add to cart</button>
                                 <button type="button" class="btn blue lighten-5 btn-rounded btn-sm my-0"
                                         @click="editProduct(product)">Edit</button>
                             </span>
@@ -40,7 +40,7 @@
 
                         <tr>
                             <td class="pt-3-half font-weight-bold " colspan="2">Subtotal:</td>
-                            <td class="pt-3-half font-weight-bold" colspan="2"></td>
+                            <td class="pt-3-half font-weight-bold" colspan="2">${{ getCartTotal }}</td>
                             <td>
                             <span class="table-remove">
                                 <a to="/checkout">
@@ -131,6 +131,7 @@
                 modal: false,
                 modal_edit: false,
                 product_copy: {},
+                cart: [],
                 products: [
                     {
                         code: '12345',
@@ -161,14 +162,18 @@
                 return post_tax.toFixed(2)
             },
             saveNewProduct() {
-                this.products.push({code: this.entry.code, name: this.entry.name, pre_tax: this.entry.pre_tax});
+                this.products.push({
+                    code: this.entry.code,
+                    name: this.entry.name,
+                    pre_tax: parseInt(this.entry.pre_tax) || 0
+                });
                 this.modal = false;
                 this.resetEntry();
             },
             saveProduct() {
                 this.product_copy.code = this.entry.code;
                 this.product_copy.name = this.entry.name;
-                this.product_copy.pre_tax = this.entry.pre_tax;
+                this.product_copy.pre_tax = parseInt(this.entry.pre_tax) || 0;
                 this.modal_edit = false;
                 this.resetEntry();
             },
@@ -185,11 +190,21 @@
                 this.entry.code = '';
                 this.entry.name = '';
                 this.entry.pre_tax = '';
+            },
+            addToCart(product) {
+                this.cart.push(product);
+            }
+        },
+        computed: {
+            getCartTotal: function () {
+                let cartTotal = 0;
+                for (let i = 0; i < this.cart.length; i++) {
+                    cartTotal += this.cart[i].pre_tax;
+                }
+                return this.getPriceWithTax(cartTotal);
             }
         }
     }
-
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
