@@ -5,7 +5,7 @@
                 <h3 class="font-weight-bold text-uppercase my-3">Our Products</h3>
                 <span class="float-right">
                         <button type="button" class="btn blue lighten-5 btn-rounded text-dark button-add-product"
-                                @click="newProduct">
+                                @click="newProduct" aria-label="New product">
                             <mdb-icon icon="plus" class="icon-margin"></mdb-icon>
                         </button>
                     </span>
@@ -33,11 +33,11 @@
                             <span class="table-remove">
                                 <button type="button"
                                         class="btn blue lighten-3 btn-rounded btn-sm button-add-to-cart"
-                                        @click="addToCart(product)">
+                                        @click="addToCart(product)" aria-label="Add to cart">
                                     <mdb-icon icon="cart-plus" class="icon-margin"></mdb-icon>
                                 </button>
                                 <button type="button" class="btn blue lighten-5 btn-rounded btn-sm button-edit"
-                                        @click="editProduct(product)">
+                                        @click="editProduct(product)" aria-label="edit">
                                 <mdb-icon icon="pen" class="icon-margin"></mdb-icon>
                                 </button>
                             </span>
@@ -52,7 +52,7 @@
                                 <a to="/checkout">
                                     <button type="button"
                                             class="btn blue darken-4 btn-rounded btn-sm my-0 text-light button-checkout"
-                                            @click="modal_cart = true">
+                                            @click="modal_cart = true" aria-label="Checkout">
                                         <mdb-icon icon="shopping-cart" class="icon-margin"></mdb-icon>
                                     </button>
                                 </a>
@@ -76,7 +76,7 @@
                     <mdb-input label="Base price" class="mb-5" v-model="entry.pre_tax"/>
                 </mdb-modal-body>
                 <mdb-modal-footer center>
-                    <button type="button" class="btn blue darken-4 text-light" @click="saveNewProduct">Save
+                    <button type="button" class="btn blue darken-4 text-light" @click="saveNewProduct" aria-label="Save">Save
                         <mdb-icon icon="save" class="ml-1"/>
                     </button>
                 </mdb-modal-footer>
@@ -94,7 +94,7 @@
                     <mdb-input label="Base price" class="mb-5" v-model="entry.pre_tax"/>
                 </mdb-modal-body>
                 <mdb-modal-footer center>
-                    <button type="button" class="btn blue darken-4 text-light" @click="saveProduct">Save
+                    <button type="button" class="btn blue darken-4 text-light" @click="saveProduct" aria-label="Save">Save
                         <mdb-icon icon="save" class="ml-1"/>
                     </button>
                 </mdb-modal-footer>
@@ -131,10 +131,10 @@
                     </mdb-tbl>
                 </mdb-modal-body>
                 <mdb-modal-footer center>
-                    <button type="button" class="btn blue lighten-5 text-dark" @click="modal_cart = false">Close
+                    <button type="button" class="btn blue lighten-5 text-dark" @click="modal_cart = false" aria-label="Close">Close
                         <mdb-icon icon="times" class="ml-1"/>
                     </button>
-                    <button type="button" class="btn blue darken-4 text-light">Buy
+                    <button type="button" class="btn blue darken-4 text-light" aria-label="Buy">Buy
                         <mdb-icon icon="money-bill-alt" class="ml-1"/>
                     </button>
                 </mdb-modal-footer>
