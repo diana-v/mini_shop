@@ -1,4 +1,7 @@
 # xplicity_project
+Starting the project:
+mysql.server start
+yarn serve
 
 ## Project setup
 ```

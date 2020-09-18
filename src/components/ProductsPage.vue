@@ -1,39 +1,45 @@
 <template>
-    <div>
-        <div class="card products-table">
-            <div class="card-header blue-gradient text-left d-flex justify-content-between align-items-center py-2">
-                <h3 class="font-weight-bold text-uppercase my-3">Products</h3>
+    <div class="content-background">
+        <main class="card products-table">
+            <header class="card-header blue-gradient text-left d-flex justify-content-between align-items-center py-2">
+                <h3 class="font-weight-bold text-uppercase my-3">Our Products</h3>
                 <span class="float-right">
-                        <mdb-btn class="blue lighten-5 text-dark" @click.native="newProduct">New Product<mdb-icon
-                                icon="plus" class="ml-2"></mdb-icon></mdb-btn>
+                        <button type="button" class="btn blue lighten-5 btn-rounded text-dark button-add-product"
+                                @click="newProduct">
+                            <mdb-icon icon="plus" class="icon-margin"></mdb-icon>
+                        </button>
                     </span>
-            </div>
+            </header>
 
-            <div class="card-body p-0">
+            <section class="card-body p-0">
                 <div id="table" class="table-editable">
-
-                    <table class="table table-bordered table-responsive-md table-striped text-center mb-0">
+                    <table class="table text-center mb-0">
                         <thead>
                         <tr>
-                            <th class="text-center font-weight-bold">Code</th>
-                            <th class="text-center font-weight-bold">Name</th>
-                            <th class="text-center font-weight-bold">Before Tax</th>
-                            <th class="text-center font-weight-bold">After Tax</th>
-                            <th class="text-center font-weight-bold">Actions</th>
+                            <th class="text-center font-weight-bold products-table-content">Code</th>
+                            <th class="text-center font-weight-bold products-table-content">Name</th>
+                            <th class="text-center font-weight-bold products-table-content">Before Tax</th>
+                            <th class="text-center font-weight-bold products-table-content">After Tax</th>
+                            <th class="text-center font-weight-bold products-table-content">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr v-for="(product, index) in products" v-bind:key="index">
-                            <td class="pt-3-half">{{ product.code }}</td>
-                            <td class="pt-3-half">{{ product.name }}</td>
-                            <td class="pt-3-half">{{ product.pre_tax }}</td>
-                            <td class="pt-3-half">{{ getPriceWithTax(product.pre_tax) }}</td>
-                            <td>
+                            <td class="pt-3-half products-table-content">{{ product.code }}</td>
+                            <td class="pt-3-half products-table-content">{{ product.name }}</td>
+                            <td class="pt-3-half products-table-content">${{ product.pre_tax }}</td>
+                            <td class="pt-3-half products-table-content">${{ getPriceWithTax(product.pre_tax) }}</td>
+                            <td class="pt-3-half products-table-content">
                             <span class="table-remove">
                                 <button type="button"
-                                        class="btn blue lighten-3 btn-rounded btn-sm my-0" @click="addToCart(product)">Add to cart</button>
-                                <button type="button" class="btn blue lighten-5 btn-rounded btn-sm my-0"
-                                        @click="editProduct(product)">Edit</button>
+                                        class="btn blue lighten-3 btn-rounded btn-sm button-add-to-cart"
+                                        @click="addToCart(product)">
+                                    <mdb-icon icon="cart-plus" class="icon-margin"></mdb-icon>
+                                </button>
+                                <button type="button" class="btn blue lighten-5 btn-rounded btn-sm button-edit"
+                                        @click="editProduct(product)">
+                                <mdb-icon icon="pen" class="icon-margin"></mdb-icon>
+                                </button>
                             </span>
                             </td>
                         </tr>
@@ -44,8 +50,10 @@
                             <td>
                             <span class="table-remove">
                                 <a to="/checkout">
-                                    <button type="button" class="btn blue darken-4 btn-rounded btn-sm my-0 text-light">Checkout
-                                        <mdb-icon icon="shopping-cart" class="ml-2"></mdb-icon>
+                                    <button type="button"
+                                            class="btn blue darken-4 btn-rounded btn-sm my-0 text-light button-checkout"
+                                            @click="modal_cart = true">
+                                        <mdb-icon icon="shopping-cart" class="icon-margin"></mdb-icon>
                                     </button>
                                 </a>
                             </span>
@@ -54,8 +62,9 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </div>
+            </section>
+        </main>
+
         <mdb-container>
             <mdb-modal :show="modal" @close="modal = false">
                 <mdb-modal-header class="text-center">
@@ -67,9 +76,9 @@
                     <mdb-input label="Base price" class="mb-5" v-model="entry.pre_tax"/>
                 </mdb-modal-body>
                 <mdb-modal-footer center>
-                    <mdb-btn @click.native="saveNewProduct" class="blue darken-4">Save
+                    <button type="button" class="btn blue darken-4 text-light" @click="saveNewProduct">Save
                         <mdb-icon icon="save" class="ml-1"/>
-                    </mdb-btn>
+                    </button>
                 </mdb-modal-footer>
             </mdb-modal>
         </mdb-container>
@@ -85,9 +94,49 @@
                     <mdb-input label="Base price" class="mb-5" v-model="entry.pre_tax"/>
                 </mdb-modal-body>
                 <mdb-modal-footer center>
-                    <mdb-btn @click.native="saveProduct" class="blue darken-4">Save
+                    <button type="button" class="btn blue darken-4 text-light" @click="saveProduct">Save
                         <mdb-icon icon="save" class="ml-1"/>
-                    </mdb-btn>
+                    </button>
+                </mdb-modal-footer>
+            </mdb-modal>
+        </mdb-container>
+
+        <mdb-container>
+            <mdb-modal :show="modal_cart" @close="modal_cart = false">
+                <mdb-modal-header class="text-center">
+                    <mdb-modal-title tag="h4" bold class="w-100">Cart</mdb-modal-title>
+                </mdb-modal-header>
+                <mdb-modal-body class="mx-3 grey-text">
+                    <mdb-tbl>
+                        <mdb-tbl-head>
+                            <tr>
+                                <th class="text-center">Code</th>
+                                <th class="text-center">Name</th>
+                                <th class="text-center">Price</th>
+                                <th class="text-center">Quantity</th>
+                            </tr>
+                        </mdb-tbl-head>
+                        <mdb-tbl-body>
+                            <tr v-for="(item, index) in cart" v-bind:key="index">
+                                <th class="text-center">{{ item.product.code }}</th>
+                                <td class="text-center">{{ item.product.name }}</td>
+                                <td class="text-center">{{ getPriceWithTax(item.product.pre_tax) }}</td>
+                                <td class="text-center">{{ item.quantity }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center pt-3-half font-weight-bold " colspan="2">Subtotal:</td>
+                                <td class="text-center pt-3-half font-weight-bold" colspan="2">${{ getCartTotal }}</td>
+                            </tr>
+                        </mdb-tbl-body>
+                    </mdb-tbl>
+                </mdb-modal-body>
+                <mdb-modal-footer center>
+                    <button type="button" class="btn blue lighten-5 text-dark" @click="modal_cart = false">Close
+                        <mdb-icon icon="times" class="ml-1"/>
+                    </button>
+                    <button type="button" class="btn blue darken-4 text-light">Buy
+                        <mdb-icon icon="money-bill-alt" class="ml-1"/>
+                    </button>
                 </mdb-modal-footer>
             </mdb-modal>
         </mdb-container>
@@ -98,27 +147,32 @@
     import {
         mdbContainer,
         mdbIcon,
-        mdbBtn,
         mdbModal,
         mdbModalHeader,
         mdbModalTitle,
         mdbModalBody,
         mdbInput,
-        mdbModalFooter
+        mdbModalFooter,
+        mdbTbl,
+        mdbTblHead,
+        mdbTblBody
+
     } from 'mdbvue';
 
     export default {
         name: 'ProductsPage',
         components: {
             mdbContainer,
-            mdbBtn,
             mdbModal,
             mdbModalHeader,
             mdbModalBody,
             mdbInput,
             mdbModalFooter,
             mdbIcon,
-            mdbModalTitle
+            mdbModalTitle,
+            mdbTbl,
+            mdbTblHead,
+            mdbTblBody
         },
         data() {
             return {
@@ -130,6 +184,7 @@
                 taxRate: 0.21,
                 modal: false,
                 modal_edit: false,
+                modal_cart: false,
                 product_copy: {},
                 cart: [],
                 products: [
@@ -192,14 +247,20 @@
                 this.entry.pre_tax = '';
             },
             addToCart(product) {
-                this.cart.push(product);
-            }
+                for (let i = 0; i < this.cart.length; i++) {
+                    if (this.cart[i].product.code == product.code) {
+                        this.cart[i].quantity++;
+                        return;
+                    }
+                }
+                this.cart.push({product: product, quantity: 1});
+            },
         },
         computed: {
             getCartTotal: function () {
                 let cartTotal = 0;
                 for (let i = 0; i < this.cart.length; i++) {
-                    cartTotal += this.cart[i].pre_tax;
+                    cartTotal += this.cart[i].product.pre_tax * this.cart[i].quantity;
                 }
                 return this.getPriceWithTax(cartTotal);
             }
@@ -207,33 +268,51 @@
     }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    /*h3 {*/
-    /*    margin: 40px 0 0;*/
-    /*}*/
-
-    /*ul {*/
-    /*    list-style-type: none;*/
-    /*    padding: 0;*/
-    /*}*/
-
-    /*li {*/
-    /*    display: inline-block;*/
-    /*    margin: 0 10px;*/
-    /*}*/
-
-    /*a {*/
-    /*    color: #42b983;*/
-    /*}*/
-
-    /*.pt-3-half {*/
-    /*    padding-top: 1.4rem;*/
-    /*}*/
+    .content-background {
+        background: #e4e5e9;
+        min-height: 100vh;
+        height: 100%;
+        justify-content: center;
+        align-content: center;
+        display: grid;
+    }
 
     .products-table {
         max-width: 90vw;
-        margin: 0 auto;
+        min-width: 90vw;
+    }
+
+    .products-table-content {
+        vertical-align: middle;
+    }
+
+    @media screen and (min-width: 670px) {
+        .button-add-product:before {
+            content: 'New Product';
+        }
+
+        .button-add-to-cart:before {
+            content: 'Add to cart';
+        }
+
+        .button-edit:before {
+            content: 'Edit';
+        }
+
+        .button-checkout:before {
+            content: 'Checkout'
+        }
+
+        .icon-margin {
+            margin-left: 10px;
+        }
+    }
+
+    @media screen and (max-width: 360px) {
+        table, td {
+            padding: 0;
+        }
     }
 </style>
 
